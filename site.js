@@ -71,6 +71,19 @@ function list() {
   });
 }
 
+function enable(name) {
+  if (Path.existsSync(nginx + 'sites-available/' + name)) {
+    if (Path.existsSync(nginx + 'sites-enabled/' + name)) {
+      p('Site already enabled');
+    } else {
+      fs.symlinkSync('../sites-available/' + name, nginx + "sites-enabled/" + name);
+      p('Enabled');
+    }
+  } else {
+    p('No such site available');
+  }
+}
+
 function create(name) {
   if (Path.existsSync(www + name) || Path.existsSync(nginx + "sites-available/" + name)) {
     p("Already present.");
