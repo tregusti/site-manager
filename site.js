@@ -114,7 +114,12 @@ function create(name) {
 }
 
 function usage() {
-  p("Usage: ");
+  p("  Usage:");
+  p("    site COMMAND [DOMAIN]");
+  p("  Examples:");
+  p("    site list");
+  p("    site create example.com");
+  p("    site enable sub.domain.se");
 };
 function p(str) {
   console.log(str);
