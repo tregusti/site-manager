@@ -1,0 +1,18 @@
+server {
+  listen 80;
+  server_name www.{domain};
+  rewrite ^ http://{domain}/$request_uri? permanent;
+}
+
+server {
+  listen 80;
+  server_name {domain};
+
+  access_log /var/www/{domain}/log/access.log;
+  error_log /var/www/{domain}/log/error.log;
+
+  location / {
+    root /var/www/{domain}/public/;
+    index index.html;
+  }
+}

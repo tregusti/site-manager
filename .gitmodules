@@ -1,0 +1,3 @@
+[submodule "node_modules/node-optimist"]
+	path = node_modules/node-optimist
+	url = https://github.com/substack/node-optimist.git
