@@ -71,16 +71,25 @@ function list() {
   });
 }
 
+function disable(name) {
+  if (Path.existsSync(nginx + 'sites-enabled/' + name)) {
+    fs.unlinkSync(nginx + 'sites-enabled/' + name);
+    p('Disabled.');
+  } else {
+    p('Site already disabled.');
+  }
+}
+
 function enable(name) {
   if (Path.existsSync(nginx + 'sites-available/' + name)) {
     if (Path.existsSync(nginx + 'sites-enabled/' + name)) {
-      p('Site already enabled');
+      p('Site already enabled.');
     } else {
       fs.symlinkSync('../sites-available/' + name, nginx + "sites-enabled/" + name);
-      p('Enabled');
+      p('Enabled.');
     }
   } else {
-    p('No such site available');
+    p('Site already enabled.');
   }
 }
 
