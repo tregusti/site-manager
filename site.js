@@ -60,11 +60,14 @@ function list() {
     p('No sites available, create one with:\n\n  ./site create <name>\n');
     return;
   }
-  p('Available sites:');
-    
+
   var enabled = fs.readdirSync(nginx + 'sites-enabled');
+  var width = available.reduce(function(max, curr) { return Math.max(curr.length, max) }, 0);
   available.forEach(function(site) {
-    p(site);
+    var s = site + Array(5 + width - site.length).join(' ');
+    if (enabled.indexOf(site) >= 0)
+      s += '[enabled]'
+    p(s);
   });
 }
 
