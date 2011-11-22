@@ -9,15 +9,23 @@ var mkdirp = require('mkdirp');
 var root, www, nginx;
 
 exec('hostname', function(error, stdout) {
-  switch(stdout.trim()) {
-    // If local dev, then fake root of system.
-    case 'Fenrir.local': root = __dirname + "/tmp/"; break;
-    // Else use the real root.
-    default: root = "/"; break;
+  root = '/';
+  
+  // If local dev, then fake root of system.
+  if (stdout.trim() === 'Fenrir.local') {
+    root = __dirname + "/tmp/";
   }
   
   www = root + "var/www/";
   nginx = root + "etc/nginx/"
+  
+  if (root !== '/') {
+    // If in faked system, create test dirs.
+    mkdirp.sync(nginx + 'sites-available', 0755);
+    mkdirp.sync(nginx + 'sites-enabled', 0755);
+    mkdirp.sync(nginx + 'conf', 0755);
+    mkdirp.sync(www, 0755);
+  }
   
   // Start parsing the command
   parse(process.argv.slice(2));
@@ -67,7 +75,16 @@ function create(name) {
   }
   
   dust.render('nginx', { domain: name }, function(err, out) {
-    fs.writeFileSync(nginx + "sites-available/" + name, out);
+    // create some folders
+    'log public config'.split(' ').forEach(function(dir) {
+      mkdirp.sync(www + name + '/' + dir, 0755);
+    });
+    // Save path to nginx conf file
+    var conf = www + name + '/config/nginx.conf';
+    // create nginx config file
+    fs.writeFileSync(conf, out);
+    // symlink it to the nginx sites confs dir
+    fs.symlinkSync(conf, nginx + "sites-available/" + name);
   });
 }
 
