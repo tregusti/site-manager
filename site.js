@@ -128,9 +128,13 @@ function loadTemplates() {
   // Prevent white space collapsing.
   dust.optimizers.format = function(ctx, node) { return node };
   
-  fs.readdirSync("templates").forEach(function(file) {
-    var src = fs.readFileSync('templates/' + file, 'utf8');
+  var path = getScriptDir() + "/templates/";
+  fs.readdirSync(path).forEach(function(file) {
+    var src = fs.readFileSync(path + file, 'utf8');
     var name = Path.basename(file).substr(0, Path.extname(file).length);
     dust.loadSource(dust.compile(src, name));
   });
+}
+function getScriptDir() {
+  return Path.dirname(process.mainModule.filename);
 }
