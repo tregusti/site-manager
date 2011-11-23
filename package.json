@@ -1,0 +1,11 @@
+{
+  "name"          : "site",
+  "version"       : "0.1.0",
+  "description"   : "Domain managing tool for tregusti01",
+  "author"        : "Glenn Nilsson",
+  "main"          : "./site",
+  "dependencies"  : {
+    "mkdirp"       : "0.2.1",
+    "dust"        : "0.3.0"
+  }
+}
